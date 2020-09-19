@@ -108,15 +108,20 @@ async function run() {
     );
     core.info(`The current release is ${currentRelease}`);
 
-    await core.group("Deploying to gigalixir", async () => {
-      if (projectPath) {
-        await exec.exec(
-          `git subtree push --prefix ${projectPath} gigalixir refs/heads/master`
-        );
-      } else {
+    if (projectPath) {
+      await core.group(
+        `Deploying subfolder ${projectPath} to gigalixir`,
+        async () => {
+          await exec.exec(
+            `git subtree push --prefix ${projectPath} gigalixir refs/heads/master`
+          );
+        }
+      );
+    } else {
+      await core.group(`Deploying to gigalixir`, async () => {
         await exec.exec("git push -f gigalixir HEAD:refs/heads/master");
-      }
-    });
+      });
+    }
 
     if (migrations === "true") {
       await core.group("Adding private key to gigalixir", async () => {
