@@ -1059,7 +1059,7 @@ async function run() {
         `Deploying subfolder ${projectPath} to gigalixir`,
         async () => {
           await exec.exec(
-            `git subtree push --prefix ${projectPath} gigalixir refs/heads/master`
+            `git subtree push --prefix ${projectPath} gigalixir master`
           );
         }
       );
